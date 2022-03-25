@@ -1,4 +1,6 @@
 // Бүх газарт ашиглагдах глобал хувьсагчдыг энд зарлая
+// Тоглоом дууссан эсэхийг хадгалах төлөвийн хувьсагч
+var isNewGame;
 // Аль тоглогч шоо шидэх вэ гэдгийг энд хадгална
 var activePlayer;
 
@@ -16,6 +18,8 @@ initGame();
 
 // Тоглоогмийг шинээр эхлэхэд бэлтгэнэ.
 function initGame() {
+  // Тоглоом эхэллээ гэдэг төлөвт оруулна.
+  isNewGame = true;
   // Тоглогчийн ээлжийг хадгалах хувьсагч, нэгдүгэээр тоглогчийг 0, хоёрдугаар тоглогчийг 1 гэж тэмдэглэе.
   activePlayer = 0;
 
@@ -48,6 +52,7 @@ function initGame() {
 
 // Шоог шидэх эвент листенер
 document.querySelector(".btn-roll").addEventListener("click", function() {
+  if (isNewGame == true){
   // 1 - 6 доторх санамсаргүй нэг тоо гаргаж авна.
   var diceNumber = Math.floor(Math.random() * 6) + 1;
 
@@ -66,11 +71,15 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
     // 1 буусан тул тоглогчийн ээлжийн энэ хэсэгт сольж өгнө
     switchToNextPlayer();
   }
+} else {
+  alert('Тоглоом дуусcан байна.New Game Товчийг дарж шинээр эхэлнэ үү!!!')
+}
 });
 
 // HOLD товчны эвент листенер
 document.querySelector(".btn-hold").addEventListener("click", function() {
-  // Уг тоглогчийн цуглуулсан ээлжийн оноог глобаль оноон дээр нь нэмж өгнө.
+  if (isNewGame== true){
+    // Уг тоглогчийн цуглуулсан ээлжийн оноог глобаль оноон дээр нь нэмж өгнө.
   scores[activePlayer] = scores[activePlayer] + roundScore;
 
   // Дэлгэцэн дээр оноог нь өөрчилнө
@@ -79,6 +88,8 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
 
   // Уг тоглогч хожсон эсэхийг (оноо нь 100-с их эсэх )шалгах
   if (scores[activePlayer] >= 10) {
+    // Тоглоомийн дууссан төлөвт оруулана.
+    isNewGame = false;
     // Ялагч гэсэн текстийг нэрийн оронд гаргана
     document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
     document
@@ -90,6 +101,9 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
   } else {
     // Тоглогчийн ээлжийг солино
     switchToNextPlayer();
+  }
+  }else {
+    alert('Тоглоом дуусcан байна.New Game Товчийг дарж шинээр эхэлнэ үү!!!')
   }
 });
 
